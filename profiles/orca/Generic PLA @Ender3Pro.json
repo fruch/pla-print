@@ -1,0 +1,25 @@
+{
+ "filament_density": ["1.24"],
+ "filament_diameter": ["1.75"],
+ "filament_flow_ratio": ["0.98"],
+ "filament_max_volumetric_speed": ["12"],
+ "filament_notes": [
+  "PLA on a stock Creality Ender 3 Pro (BOWDEN, stock hotend, 0.4 brass).\n\n=== PENDING - fill in after physical calibration ===\nnozzle_temperature            205   PENDING  <- temp tower 225->190C\nfilament_flow_ratio           0.98  PENDING  <- flow tower 90-110%\nfilament_retraction_length    4     PENDING  <- retraction tower 2-7mm, expect 4-6mm\nfilament_max_volumetric_speed 12    PENDING  <- max flow tower, expect 8-12 mm3/s on stock hotend\npressure advance                    SKIP     <- stock Creality 4.2.2 Marlin has LIN_ADVANCE off\n\nUpdate the matching line in photos/LOG.md whenever a value changes."
+ ],
+ "filament_retraction_length": ["4"],
+ "filament_retraction_speed": ["40"],
+ "filament_wipe": ["1"],
+ "filament_settings_id": ["Generic PLA @Ender3Pro"],
+ "filament_type": ["PLA"],
+ "filament_z_hop": ["0"],
+ "filament_z_hop_types": ["Normal Lift"],
+ "from": "User",
+ "hot_plate_temp": ["60"],
+ "hot_plate_temp_initial_layer": ["60"],
+ "inherits": "Generic PLA @System",
+ "name": "Generic PLA @Ender3Pro",
+ "nozzle_temperature": ["205"],
+ "nozzle_temperature_initial_layer": ["210"],
+ "type": "filament",
+ "version": "2.4.0.2"
+}
