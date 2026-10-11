@@ -26,7 +26,15 @@ Remaining causes, most likely first:
    against the nozzle with the hotend at temperature and clip the coupler.
 3. Then 190 C (clean on the temp tower too).
 
-**Next print:** after drying, `out/calibration/01_retraction.gcode`
+**Update - wipe was still on.** fruch/tpu-print PR #4 found the working
+anti-stringing set is four changes together: low temp, travel 150, z-hop off,
+**wipe off**. This profile had the first three. Wipe on also meant the model
+never matched the retraction tower (calibrate.sh forces wipe off), and ~1 mm of
+each retraction happened during the wipe instead of before the travel. Now
+wipe off: one clean 5.0 mm retraction per travel. Re-sliced the 1x skyline.
+
+**Next print:** `out/model/skyline_1x_0.20.gcode` (1h 37m, wipe off). Still
+stringy -> dry the spool, then `out/calibration/01_retraction.gcode`
 (4 / 5 / 6 mm at 195 C, 23 min). Clean -> re-print the 1x skyline.
 Whatever fine hairs survive: a quick pass with a heat gun removes them.
 

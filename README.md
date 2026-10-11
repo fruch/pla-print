@@ -70,7 +70,7 @@ changes:
 |---|---|---|
 | nozzle | 205 C (210 first layer) | middle of the PLA range; temp tower decides |
 | retraction | 4 mm @ 40 mm/s | Ender default length; Bowden PLA lands 4-6 mm |
-| wipe | on | cuts the ooze trail before travel |
+| wipe | off | part of the anti-stringing set validated in tpu-print PR #4 (low temp, travel 150, z-hop off, wipe off); also matches the retraction tower, which needs wipe off |
 | z-hop | 0 | z-hop on PLA leaves a string on every travel; only enable it if the nozzle hits the print |
 | flow | 0.98 | typical Ender; flow staircase decides |
 | max volumetric | 12 mm3/s | stock hotend ceiling; max flow tower decides |

@@ -12,7 +12,7 @@
   "12"
  ],
  "filament_notes": [
-  "PLA on a stock Creality Ender 3 Pro (BOWDEN, stock hotend, 0.4 brass).\n\n=== PENDING - fill in after physical calibration ===\nnozzle_temperature            195   measured 2026-10-11 (225/215 string, 205 zits, 195/190 clean)\nfilament_flow_ratio           0.98  PENDING  <- flow tower 90-110%\nfilament_retraction_length    5     measured 2026-10-11 (2 blobby, 4/6 fine hairs at 205C)\nfilament_max_volumetric_speed 12    PENDING  <- max flow tower, expect 8-12 mm3/s on stock hotend\npressure advance                    SKIP     <- stock Creality 4.2.2 Marlin has LIN_ADVANCE off\n\nUpdate the matching line in photos/LOG.md whenever a value changes."
+  "PLA on a stock Creality Ender 3 Pro (BOWDEN, stock hotend, 0.4 brass).\n\n=== PENDING - fill in after physical calibration ===\nnozzle_temperature            195   measured 2026-10-11 (225/215 string, 205 zits, 195/190 clean)\nfilament_flow_ratio           0.98  PENDING  <- flow tower 90-110%\nfilament_retraction_length    5     measured 2026-10-11 (2 blobby, 4/6 fine hairs at 205C)\nfilament_max_volumetric_speed 12    PENDING  <- max flow tower, expect 8-12 mm3/s on stock hotend\npressure advance                    SKIP     <- stock Creality 4.2.2 Marlin has LIN_ADVANCE off\n\nUpdate the matching line in photos/LOG.md whenever a value changes.\n\nAnti-stringing set, taken from fruch/tpu-print PR #4 where it was validated by\nprinting the same tower twice: low temp, travel 150, z-hop off, WIPE OFF.\nKeep the four together. Wipe off also matches calibrate.sh, which forces it\noff for the retraction tower - so the tower's number applies to the model."
  ],
  "filament_retraction_length": [
   "5"
@@ -21,7 +21,7 @@
   "40"
  ],
  "filament_wipe": [
-  "1"
+  "0"
  ],
  "filament_settings_id": [
   "Generic PLA @Ender3Pro"
