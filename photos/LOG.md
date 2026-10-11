@@ -5,6 +5,33 @@ Drop the photo next to this file as `YYYY-MM-DD-<name>.jpg`.
 
 ---
 
+## 2026-10-11 - skyline 1x at 195 C / 5 mm
+
+Text and base are clean now ("fruch" is readable). Stringing is **as bad as
+before**, worst at the top where the towers are far apart.
+
+Checked the G-code: 195 C applied, every tower-to-tower travel retracts
+~5 mm (4 mm + 1 mm during wipe); the only unretracted travels are short hops
+inside infill. So this is not a slicer setting. The retraction tower already
+left a fine hair per travel at 4-6 mm; this model makes thousands of travels.
+
+Remaining causes, most likely first:
+1. **Wet filament.** Fine hairs at every temperature and retraction value is
+   the signature. Check: bend a 10 cm piece - wet PLA snaps instead of
+   bending; listen for crackle/pop and watch for steam when extruding by hand.
+   Dry 45-50 C for 4-6 h.
+2. **PTFE tube not seated against the nozzle** (classic Ender 3). Molten PLA
+   pools in the gap, so retraction pulls back the tube contents but the nozzle
+   keeps oozing. Check: tube end burnt/brown or not cut square; re-seat it hard
+   against the nozzle with the hotend at temperature and clip the coupler.
+3. Then 190 C (clean on the temp tower too).
+
+**Next print:** after drying, `out/calibration/01_retraction.gcode`
+(4 / 5 / 6 mm at 195 C, 23 min). Clean -> re-print the 1x skyline.
+Whatever fine hairs survive: a quick pass with a heat gun removes them.
+
+---
+
 ## 2026-10-11 - temperature + retraction towers (FAST mode)
 
 | Print | Bands, bottom -> top | Result |
