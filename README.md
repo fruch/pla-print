@@ -32,6 +32,22 @@ cp ~/Downloads/part.stl model/
 ./slice.sh --wall-loops 3      # extra args go straight to Orca
 ```
 
+### Print it as big as the bed allows
+
+```bash
+python3 scripts/scale_to_bed.py ~/Downloads/part.3mf model/part_big.stl
+./slice.sh --arrange 0 --brim-type no_brim
+```
+
+`scale_to_bed.py` tries every Z rotation and keeps the one that allows the
+biggest scale (long thin parts win on the 45 deg diagonal), centred on the
+220 x 220 bed with a 5 mm edge margin. Orca's CLI `--scale` is broken in 2.4.2,
+so the mesh is scaled here instead.
+
+Both flags matter for a bed-filling part: `--arrange 1` (the default) pushes it
+off the plate, and Orca's auto-brim adds a brim to tall thin parts that no
+longer fits. Either one fails the slice with `return_code -102`.
+
 Override the slicer path with `ORCA=/path/to/OrcaSlicer.AppImage`.
 
 | # | Test | How |

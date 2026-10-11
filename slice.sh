@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # Slice every STL/3MF in model/ with the PLA profile + anti-stringing travel.
 #   ./slice.sh            -> out/model/<name>.gcode
-#   ./slice.sh --wall-loops 3    extra args go straight to Orca
+#   ./slice.sh --wall-loops 3    extra args go straight to Orca and win
+#   ./slice.sh --arrange 0       keep the STL's own position (needed for bed-filling parts)
 set -Eeuo pipefail
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 cd "$HERE"
@@ -27,8 +28,8 @@ mkdir -p out/model
 for f in "${files[@]}"; do
     job="$(basename "${f%.*}")"; work="$(mktemp -d)"
     "$ORCA" --load-settings "$MACHINE;$PROCESS" --load-filaments "$FILAMENT" \
-        --layer-change-gcode $'G92 E0\n' "${ANTI_STRING[@]}" "$@" \
-        --slice 0 --arrange 1 --outputdir "$work" "$f" >"$work/log" 2>&1 || { cat "$work/log" >&2; exit 1; }
+        --layer-change-gcode $'G92 E0\n' "${ANTI_STRING[@]}" --arrange 1 "$@" \
+        --slice 0 --outputdir "$work" "$f" >"$work/log" 2>&1 || { cat "$work/log" >&2; exit 1; }
     rc=$(python3 -c "import json,sys;print(json.load(open(sys.argv[1])).get('return_code',0))" "$work/result.json")
     [[ "$rc" == "0" ]] || { cat "$work/log" >&2; echo "slice failed: $f (rc=$rc)" >&2; exit 1; }
     mv "$work"/*.gcode "out/model/$job.gcode"; rm -rf "$work"
