@@ -5,6 +5,22 @@ Drop the photo next to this file as `YYYY-MM-DD-<name>.jpg`.
 
 ---
 
+## 2026-10-11 - temperature + retraction towers (FAST mode)
+
+| Print | Bands, bottom -> top | Result |
+|---|---|---|
+| temp tower | 225 / 215 / 205 / 195 / 190 C | 225 and 215 string and blob on the inner faces, 205 still has zits, **195 and 190 clean** |
+| retraction tower (at 205 C) | 2 / 4 / 6 mm | 2 mm thick blobby zigzags; 4 and 6 mm fine hairs only - retraction alone does not get it clean at 205 C, temperature is the bigger lever |
+
+Profile now: **nozzle 195 C** (205 C first layer), **retraction 5 mm @ 40 mm/s**.
+If the top band snaps easily by hand, go to 200 C. If 195 C still leaves fine
+hairs, dry the spool before touching retraction again.
+
+**Next print:** `out/model/skyline_1x_0.20.gcode` (1h 39m) as the full check,
+then `skyline_big_0.20.gcode` (13h 45m).
+
+---
+
 ## 2026-10-10 - GitHub contribution skyline (light blue PLA)
 
 Model: `github-fruch-Oct 2025 - Oct 2026.3mf`, sliced in Bambu Studio 2.6 with
