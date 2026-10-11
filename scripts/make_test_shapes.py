@@ -2,6 +2,8 @@
 """Test bodies for the calibration sweeps.
 
     pillars  two towers with a gap -- strings show in the gap (retraction)
+    grid     3x3 thin towers -- many gap-crossing travels per layer, like a
+             skyline; for A/B-ing anti-stringing settings
     block    a plain full-scale slab, for squeezing
     rbox     a rounded box -- the default squish coupon: flat bottom to print
              on, curved sides for the wall to wrap, and a broad flat-ish top
@@ -30,6 +32,17 @@ def pillars(size=10.0, gap=15.0, height=25.0, base=1.2, overhang=2.0):
     tris += box(0, 0, 0, size, size, base + height)
     tris += box(size + gap, 0, 0, width, size, base + height)
     return tris, (width + 2 * o, size + 2 * o, base + height)
+
+
+def grid(n=3, size=4.0, gap=10.0, height=15.0, base=1.2, overhang=2.0):
+    width = n * size + (n - 1) * gap
+    o = overhang
+    tris = box(-o, -o, 0, width + o, width + o, base)
+    for i in range(n):
+        for j in range(n):
+            x, y = i * (size + gap), j * (size + gap)
+            tris += box(x, y, 0, x + size, y + size, base + height)
+    return tris, (width + 2 * o, width + 2 * o, base + height)
 
 
 def plate(x=25.0, y=25.0, z=2.4):
@@ -134,7 +147,7 @@ def block(x=50.0, y=50.0, z=30.0):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("shape", choices=["pillars", "plate", "block", "rbox", "dome"])
+    ap.add_argument("shape", choices=["pillars", "grid", "plate", "block", "rbox", "dome"])
     ap.add_argument("--out", required=True)
     ap.add_argument("--height", type=float, default=None)
     ap.add_argument("--size", type=float, default=50.0, help="coupon XY size")
@@ -146,6 +159,8 @@ def main():
 
     if a.shape == "pillars":
         tris, dims = pillars(height=a.height if a.height else 25.0)
+    elif a.shape == "grid":
+        tris, dims = grid(height=a.height if a.height else 15.0)
     elif a.shape == "block":
         tris, dims = block(x=a.size, y=a.size, z=a.height if a.height else 30.0)
     elif a.shape == "rbox":

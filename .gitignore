@@ -13,3 +13,4 @@ calibration/retraction_pillars.stl
 # Your own models stay local
 model/*
 !model/.gitkeep
+calibration/grid.stl

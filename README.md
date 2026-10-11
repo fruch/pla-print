@@ -57,6 +57,7 @@ Override the slicer path with `ORCA=/path/to/OrcaSlicer.AppImage`.
 | 3 | flow staircase 90 -> 110 % | `M221` per step |
 | 4 | retraction tower 2 -> 7 mm | sliced once, retractions rescaled per band by `scripts/retraction_tower.py` |
 | 5 | max flow tower | `M220` per band, ceiling 15 mm3/s |
+| - | `./calibrate.sh wipe` | A/B pair, 21 min each: 9 thin 5 mm towers (~280 gap-crossing travels), sliced with wipe on and off and nothing else different |
 
 Pressure advance is skipped: stock Creality 4.2.2 Marlin ships with
 `LIN_ADVANCE` off.

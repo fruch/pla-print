@@ -104,6 +104,18 @@ for test in "${TESTS[@]}"; do
         add retraction "Two pillars; retraction changes every ${RETR_BAND}mm going up (${RETR// /, } mm). Take the SHORTEST clean band - extra retraction only adds clogs and wear."
         python3 scripts/retraction_tower.py "$raw" "$FN" --base "$base" --values "$RETR" --band-height "$RETR_BAND" | sed 's/^/  /'
         rm -f "$raw" ;;
+      wipe)
+        bold "wipe A/B (grid of thin towers)"
+        STL=calibration/grid.stl
+        (cd scripts && python3 make_test_shapes.py grid --out "../$STL" --height 5) 2>/dev/null
+        # Same travel as slice.sh, so the only difference between the two
+        # files is wipe; temperature and retraction come from the profile.
+        for w in 1 0; do
+            add "wipe_$([[ $w == 1 ]] && echo on || echo off)" "Print both, one after the other. 9 thin towers, many travels per layer. Fewer hairs between the towers wins - the only difference is wipe $([[ $w == 1 ]] && echo ON || echo OFF)."
+            slice_to "$STL" "$FN" "$G92" --filament-wipe=$w --travel-speed 150 --reduce-crossing-wall=1 --brim-type no_brim --wall-loops 2
+            printf '  %s\n' "$(basename "$FN")"
+        done
+        continue ;;
       mvs)
         bold "max flow tower"
         STL=calibration/speed_tower.stl
@@ -112,7 +124,7 @@ for test in "${TESTS[@]}"; do
                 --band-height "$T_BAND" --out "$STL" 2>/dev/null)"
         add maxflow "Speed rises ${SPD_STEP}% per ${T_BAND}mm band from ${SPD_START}%. Find where the wall first goes thin/rough; take the band below it: mm3/s = ${MVS_CEIL} x band% / 100."
         slice_to "$STL" "$FN" "$LG" --filament-max-volumetric-speed "$MVS_CEIL" --wall-loops 2 ;;
-      *) die "unknown test '$test' (level temp flow retraction mvs)" ;;
+      *) die "unknown test '$test' (level temp flow retraction mvs wipe)" ;;
     esac
     printf '  %s\n' "$(basename "$FN")"
 done
