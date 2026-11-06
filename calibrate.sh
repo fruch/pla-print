@@ -116,6 +116,39 @@ for test in "${TESTS[@]}"; do
             printf '  %s\n' "$(basename "$FN")"
         done
         continue ;;
+      string)
+        # The grid of thin towers strings like a spiky or skyline part (many
+        # gap-crossing travels per layer), with the nozzle temperature stepped
+        # per band, so one print answers "which temperature stops the hairs"
+        # on the geometry that actually strings.
+        S_START="${S_START:-205}"; S_END="${S_END:-190}"; S_BAND="${S_BAND:-3}"
+        bands=$(( (S_START - S_END) / 5 + 1 ))
+        bold "stringing grid ${S_START}->${S_END} C, ${S_BAND} mm bands"
+        STL=calibration/grid.stl
+        LG="$(python3 scripts/make_temp_tower.py --start "$S_START" --end "$S_END" --step 5 \
+                --band-height "$S_BAND" --out calibration/temp_tower.stl 2>/dev/null)"
+        (cd scripts && python3 make_test_shapes.py grid --out "../$STL" --height "$((bands * S_BAND))") 2>/dev/null
+        add "string_grid_${S_START}-${S_END}" "9 thin towers, bottom band ${S_START}C, 5C cooler every ${S_BAND}mm. Pick the lowest (hottest) band whose gaps are clean - cooler still is fine if layers hold. Wipe off, profile retraction."
+        slice_to "$STL" "$FN" "$LG" --filament-wipe=0 --travel-speed 150 --reduce-crossing-wall=1 --brim-type no_brim --wall-loops 2
+        printf '  %s\n' "$(basename "$FN")"
+        continue ;;
+      rstring)
+        # Same grid, but retraction length stepped per band (temperature from
+        # the profile). Sliced once, then the retractions are rescaled per
+        # band exactly like the retraction tower.
+        RS="${RS:-3 4 5 6}"; S_BAND="${S_BAND:-3}"
+        n=$(wc -w <<< "$RS"); base=$(awk '{print $1}' <<< "$RS")
+        bold "retraction grid ${RS} mm, ${S_BAND} mm bands"
+        STL=calibration/grid.stl
+        (cd scripts && python3 make_test_shapes.py grid --out "../$STL" --height "$((n * S_BAND))") 2>/dev/null
+        raw="$(mktemp)"
+        slice_to "$STL" "$raw" "$G92" --filament-wipe=0 --filament-retraction-length "$base" \
+            --travel-speed 150 --reduce-crossing-wall=1 --brim-type no_brim --wall-loops 2
+        add "retraction_grid_${RS// /-}mm" "9 thin towers; retraction changes every ${S_BAND}mm going up (${RS// /, } mm). Pick the SHORTEST band whose gaps are clean."
+        python3 scripts/retraction_tower.py "$raw" "$FN" --base "$base" --values "$RS" --band-height "$S_BAND" | sed 's/^/  /'
+        rm -f "$raw"
+        printf '  %s\n' "$(basename "$FN")"
+        continue ;;
       mvs)
         bold "max flow tower"
         STL=calibration/speed_tower.stl
