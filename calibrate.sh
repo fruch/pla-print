@@ -15,7 +15,9 @@ ORCA="${ORCA:-$HOME/Downloads/OrcaSlicer_Linux_AppImage_Ubuntu2404_V2.4.2.AppIma
 SYS="$HOME/.config/OrcaSlicer/system"
 MACHINE="$SYS/Creality/machine/Creality Ender-3 Pro 0.4 nozzle.json"
 PROCESS="$SYS/Creality/process/0.20mm Standard @Creality Ender3 Pro 0.4.json"
-FILAMENT="$HERE/profiles/orca/Generic PLA @Ender3Pro.json"
+# Orca 2.5's CLI only resolves user presets installed in its --datadir, so
+# with 2.5 point FILAMENT at the installed copy there.
+FILAMENT="${FILAMENT:-$HERE/profiles/orca/Generic PLA @Ender3Pro.json}"
 # The Ender chain never sets use_relative_e_distances, so Orca falls back to
 # relative E with an empty layer_change_gcode and refuses to slice.
 G92=$'G92 E0\n'
@@ -33,8 +35,10 @@ FLOW_START="${FLOW_START:-90}"; FLOW_END="${FLOW_END:-110}"; FLOW_STEP="${FLOW_S
 SPD_START="${SPD_START:-40}";  SPD_END="${SPD_END:-160}";  SPD_STEP="${SPD_STEP:-20}"
 MVS_CEIL="${MVS_CEIL:-15}"           # stock Ender hotend tops out ~10-12 mm3/s
 
+# travel 150 everywhere: Orca 2.5 made travel_speed a list, so a later
+# --travel-speed APPENDS instead of overriding and the first value wins.
 CAL=(--wall-loops 3 --sparse-infill-density 15% --top-shell-layers 3
-     --bottom-shell-layers 3 --brim-type outer_only --brim-width 5 --travel-speed 120)
+     --bottom-shell-layers 3 --brim-type outer_only --brim-width 5 --travel-speed 150)
 
 bold() { printf '\n\033[1m== %s\033[0m\n' "$*"; }
 die()  { printf '\033[31mERROR: %s\033[0m\n' "$*" >&2; exit 1; }
